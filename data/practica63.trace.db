@@ -1,0 +1,4 @@
+2026-04-11 15:34:26.603737-06:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "select * [*]form direccion"
+Syntax error in SQL statement "select * [*]form direccion"; SQL statement:
+select * form direccion [42000-240]
