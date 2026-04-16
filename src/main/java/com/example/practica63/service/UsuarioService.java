@@ -13,8 +13,12 @@ public class UsuarioService {
     @Autowired
     UsuarioRepository usuarioRepository;
 
-    public Usuario crearUsuario(Usuario usuario) {
-        return usuarioRepository.save(usuario);
+    public Usuario crearUsuario(Usuario usuario) throws Exception {
+        if (usuario.getEdad() >= 18) {
+            return usuarioRepository.save(usuario);
+        }
+        throw new Exception("No se permite usuarios menores de 18 años");
+
     }
 
     public Optional<Usuario> obtenerUsuarioPorId(Long idUsuario) {

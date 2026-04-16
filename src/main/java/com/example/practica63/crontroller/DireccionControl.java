@@ -18,7 +18,7 @@ public class DireccionControl {
     DireccionService direccionService;
 
     @GetMapping("/direcciones")
-    public List<Direccion> obtenerDireccion() {
+    public List<Direccion> obtenerDirecciones() {
         return direccionService.obtenerDirecciones();
     }
 

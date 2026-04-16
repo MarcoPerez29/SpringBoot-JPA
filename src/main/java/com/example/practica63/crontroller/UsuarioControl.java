@@ -18,7 +18,7 @@ public class UsuarioControl {
     UsuarioService usuarioService;
 
     @GetMapping("/usuarios")
-    public List<Usuario> obtenerUsuario() {
+    public List<Usuario> obtenerUsuarios() {
         // Devuelve un objeto User que se convertirá automáticamente en JSON/XML en la respuesta
         return usuarioService.obtenerUsuarios();
     }
@@ -27,19 +27,23 @@ public class UsuarioControl {
     public ResponseEntity<Usuario> obtenerUsuarioPorId(@PathVariable Long id) {
         // Lógica para obtener el usuario por su ID
         // Devuelve un objeto User que se convertirá automáticamente en JSON/XML en la respuesta
-        System.out.println("Id recibido: " + id);
+        //System.out.println("Id recibido: " + id);
         Optional<Usuario> usuarioOptional = usuarioService.obtenerUsuarioPorId(id);
 
         return usuarioOptional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping("/usuarios")
-    public ResponseEntity<Usuario> crearUsuario(@RequestBody Usuario usuario) throws URISyntaxException {
+    public ResponseEntity<Usuario> crearUsuario(@RequestBody Usuario usuario) {
         // Lógica para crear un nuevo usuario
         // Retorna ResponseEntity con el objeto User en el cuerpo y un código de estado 201 (CREATED) en la respuesta
-        usuarioService.crearUsuario(usuario);
+        try {
+            usuarioService.crearUsuario(usuario);
+            return ResponseEntity.created(new URI("http://local/host/usuarios")).build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
 
-        return ResponseEntity.created(new URI("http://local/host/usuarios")).build();
     }
 
     @PutMapping("/usuarios/{id}")
