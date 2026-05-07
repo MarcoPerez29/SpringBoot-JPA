@@ -2,3 +2,57 @@
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "select * [*]form direccion"
 Syntax error in SQL statement "select * [*]form direccion"; SQL statement:
 select * form direccion [42000-240]
+2026-04-24 15:18:49.206440-06:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "TELEFONO" no encontrada
+Table "TELEFONO" not found; SQL statement:
+select t1_0.id_usuario,t1_0.id_telefono,t1_0.lada,t1_0.numero,t1_0.tipo_telefono from telefono t1_0 where t1_0.id_usuario=? [42102-240]
+2026-04-24 15:19:41.463709-06:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "TELEFONO" no encontrada
+Table "TELEFONO" not found; SQL statement:
+select t1_0.id_usuario,t1_0.id_telefono,t1_0.lada,t1_0.numero,t1_0.tipo_telefono from telefono t1_0 where t1_0.id_usuario=? [42102-240]
+2026-04-24 15:22:41.835508-06:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "TELEFONO" no encontrada
+Table "TELEFONO" not found; SQL statement:
+select t1_0.id_usuario,t1_0.id_telefono,t1_0.lada,t1_0.numero,t1_0.tipo_telefono from telefono t1_0 where t1_0.id_usuario=? [42102-240]
+2026-04-24 15:23:06.109522-06:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "TELEFONO" no encontrada
+Table "TELEFONO" not found; SQL statement:
+select t1_0.id_usuario,t1_0.id_telefono,t1_0.lada,t1_0.numero,t1_0.tipo_telefono from telefono t1_0 where t1_0.id_usuario=? [42102-240]
+2026-04-24 15:26:39.157969-06:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "TELEFONO" no encontrada
+Table "TELEFONO" not found; SQL statement:
+select t1_0.id_usuario,t1_0.id_telefono,t1_0.lada,t1_0.numero,t1_0.tipo_telefono from telefono t1_0 where t1_0.id_usuario=? [42102-240]
+2026-04-24 15:30:18.812359-06:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "TELEFONO" no encontrada
+Table "TELEFONO" not found; SQL statement:
+select t1_0.id_usuario,t1_0.id_telefono,t1_0.lada,t1_0.numero,t1_0.tipo_telefono from telefono t1_0 where t1_0.id_usuario=? [42102-240]
+2026-04-24 15:32:58.064098-06:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "TELEFONO" no encontrada
+Table "TELEFONO" not found; SQL statement:
+select t1_0.id_telefono,t1_0.lada,t1_0.numero,t1_0.tipo_telefono,t1_0.id_usuario from telefono t1_0 [42102-240]
+2026-04-24 15:33:23.200476-06:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "DIRECCIONES" no encontrada
+Table "DIRECCIONES" not found; SQL statement:
+select * from direcciones [42102-240]
+2026-04-24 15:34:57.186640-06:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "TELEFONO" no encontrada
+Table "TELEFONO" not found; SQL statement:
+select t1_0.id_usuario,t1_0.id_telefono,t1_0.lada,t1_0.numero,t1_0.tipo_telefono from telefono t1_0 where t1_0.id_usuario=? [42102-240]
+2026-04-24 15:49:46.720341-06:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "TELEFONO" no encontrada
+Table "TELEFONO" not found; SQL statement:
+select t1_0.id_usuario,t1_0.id_telefono,t1_0.lada,t1_0.numero,t1_0.tipo_telefono from telefono t1_0 where t1_0.id_usuario=? [42102-240]
+2026-04-24 15:52:20.096025-06:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "TELEFONO" no encontrada
+Table "TELEFONO" not found; SQL statement:
+select t1_0.id_usuario,t1_0.id_telefono,t1_0.lada,t1_0.numero,t1_0.tipo_telefono from telefono t1_0 where t1_0.id_usuario=? [42102-240]
+2026-04-24 15:57:04.524275-06:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "CREATE TABLE telefono (\000d\000a                id_telefono INT NOT NULL AUTO_INCREMENT PRIMARY KEY,\000d\000a                id_usuario INT NOT NULL\000d\000a                [*]tipo_telefono VARCHAR(20),\000d\000a                lada INT,\000d\000a                numero VARCHAR(15)\000d\000a            )"; se esperaba "DEFAULT, GENERATED, ON UPDATE, DEFAULT ON NULL, SEQUENCE, SELECTIVITY, COMMENT, CONSTRAINT, COMMENT, PRIMARY KEY, UNIQUE, NOT NULL, CHECK, REFERENCES, ,, )"
+Syntax error in SQL statement "CREATE TABLE telefono (\000d\000a                id_telefono INT NOT NULL AUTO_INCREMENT PRIMARY KEY,\000d\000a                id_usuario INT NOT NULL\000d\000a                [*]tipo_telefono VARCHAR(20),\000d\000a                lada INT,\000d\000a                numero VARCHAR(15)\000d\000a            )"; expected "DEFAULT, GENERATED, ON UPDATE, DEFAULT ON NULL, SEQUENCE, SELECTIVITY, COMMENT, CONSTRAINT, COMMENT, PRIMARY KEY, UNIQUE, NOT NULL, CHECK, REFERENCES, ,, )"; SQL statement:
+CREATE TABLE telefono (
+                id_telefono INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                id_usuario INT NOT NULL
+                tipo_telefono VARCHAR(20),
+                lada INT,
+                numero VARCHAR(15)
+            ) [42001-240]

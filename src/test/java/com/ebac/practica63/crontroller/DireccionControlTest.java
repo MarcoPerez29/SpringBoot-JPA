@@ -1,7 +1,7 @@
-package com.example.practica63.crontroller;
+package com.ebac.practica63.crontroller;
 
-import com.example.practica63.dto.Direccion;
-import com.example.practica63.service.DireccionService;
+import com.ebac.practica63.dto.Direccion;
+import com.ebac.practica63.service.DireccionService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -37,11 +37,16 @@ class DireccionControlTest {
         when(direccionService.obtenerDirecciones()).thenReturn(direccionesListExpected);
 
         // Ejecutamos el metodo del controlador
-        List<Direccion> direccionesListActual = direccionControl.obtenerDirecciones();
+        ResponseWrapper<List<Direccion>> direccionesWrapperActual = direccionControl.obtenerDirecciones();
+        List<Direccion> direccionesListActual = direccionesWrapperActual.getResponseEntity().getBody();
+        boolean direccionesIsSuccesActual = direccionesWrapperActual.isSuccess();
+        String direccionesMessageActual = direccionesWrapperActual.getMessage();
 
         // Validamos el resultado
         assertEquals(direcciones, direccionesListActual.size());
         assertEquals(direccionesListExpected, direccionesListActual);
+        assertTrue(direccionesIsSuccesActual);
+        assertEquals("Listado de direcciones", direccionesMessageActual);
     }
 
     @Test
@@ -50,7 +55,8 @@ class DireccionControlTest {
         when(direccionService.obtenerDirecciones()).thenReturn(List.of());
 
         // Ejecutamos el metodo del controlador
-        List<Direccion> direccionesListActual = direccionControl.obtenerDirecciones();
+        ResponseWrapper<List<Direccion>> direccionesWrapperActual = direccionControl.obtenerDirecciones();
+        List<Direccion> direccionesListActual = direccionesWrapperActual.getResponseEntity().getBody();
 
         // Validamos el resultado
         assertTrue(direccionesListActual.isEmpty());
@@ -66,13 +72,18 @@ class DireccionControlTest {
         when(direccionService.obtenerDireccionPorId(idDireccion)).thenReturn(direccionExpected);
 
         // Ejecutamos el metodo del controlador
-        ResponseEntity<Direccion> direccionResponseEntity = direccionControl.obtenerDireccionPorId(idDireccion);
+        ResponseWrapper<Direccion> direccionWrapperActual = direccionControl.obtenerDireccionPorId(idDireccion);
+        ResponseEntity<Direccion> direccionResponseEntity = direccionWrapperActual.getResponseEntity();
         Direccion direccionActual = direccionResponseEntity.getBody();
+        boolean direccionIsSuccesActual = direccionWrapperActual.isSuccess();
+        String direccionMessageActual = direccionWrapperActual.getMessage();
 
         // Validamos el resultado
         assertEquals(200, direccionResponseEntity.getStatusCode().value());
         assertNotNull(direccionActual);
         assertEquals("Calle1", direccionActual.getCalle());
+        assertTrue(direccionIsSuccesActual);
+        assertEquals("Informacion de la direccion 1", direccionMessageActual);
     }
 
     @Test
@@ -83,12 +94,17 @@ class DireccionControlTest {
         when(direccionService.obtenerDireccionPorId(idDireccion)).thenReturn(Optional.empty());
 
         // Ejecutamos el metodo del controlador
-        ResponseEntity<Direccion> direccionResponseEntity = direccionControl.obtenerDireccionPorId(idDireccion);
+        ResponseWrapper<Direccion> direccionWrapperActual = direccionControl.obtenerDireccionPorId(idDireccion);
+        ResponseEntity<Direccion> direccionResponseEntity = direccionWrapperActual.getResponseEntity();
         Direccion direccionActual = direccionResponseEntity.getBody();
+        boolean direccionIsSuccesActual = direccionWrapperActual.isSuccess();
+        String direccionMessageActual = direccionWrapperActual.getMessage();
 
         // Validamos el resultado
         assertEquals(404, direccionResponseEntity.getStatusCode().value());
         assertTrue(Objects.isNull(direccionActual));
+        assertFalse(direccionIsSuccesActual);
+        assertEquals("El id: 1, no existe", direccionMessageActual);
     }
 
     @Test
@@ -99,12 +115,17 @@ class DireccionControlTest {
         when(direccionService.crearDireccion(direccionExpected)).thenReturn(direccionExpected);
 
         // Ejecutamos el metodo del controlador
-        ResponseEntity<Direccion> direccionResponseEntity = direccionControl.crearDireccion(direccionExpected);
+        ResponseWrapper<Direccion> direccionWrapperActual = direccionControl.crearDireccion(direccionExpected);
+        ResponseEntity<Direccion> direccionResponseEntity = direccionWrapperActual.getResponseEntity();
         Direccion direccionActual = direccionResponseEntity.getBody();
+        boolean direccionIsSuccesActual = direccionWrapperActual.isSuccess();
+        String direccionMessageActual = direccionWrapperActual.getMessage();
 
         // Validamos el resultado
         assertEquals(201, direccionResponseEntity.getStatusCode().value());
         assertTrue(Objects.isNull(direccionActual));
+        assertTrue(direccionIsSuccesActual);
+        assertEquals("Direccion creada exitosamente", direccionMessageActual);
     }
 
     @Test
@@ -130,8 +151,11 @@ class DireccionControlTest {
         doNothing().when(direccionService).actualizarDireccion(direccionActualizada);
 
         // Ejecutamos el metodo del controlador
-        ResponseEntity<Direccion> direccionResponseEntity = direccionControl.actualizarDireccion((long) idDireccion, direccionActualizada);
+        ResponseWrapper<Direccion> direccionWrapperActual = direccionControl.actualizarDireccion((long) idDireccion, direccionActualizada);
+        ResponseEntity<Direccion> direccionResponseEntity = direccionWrapperActual.getResponseEntity();
         Direccion direccionActual = direccionResponseEntity.getBody();
+        boolean direccionIsSuccesActual = direccionWrapperActual.isSuccess();
+        String direccionMessageActual = direccionWrapperActual.getMessage();
 
         // Validamos el resultado
         assertEquals(200, direccionResponseEntity.getStatusCode().value());
@@ -140,6 +164,8 @@ class DireccionControlTest {
         assertEquals(estadoActualizado, direccionActual.getEstado());
         assertEquals(calleActualizada, direccionActual.getCalle());
         assertEquals(numeroActualizado, direccionActual.getNumero());
+        assertTrue(direccionIsSuccesActual);
+        assertEquals("Direccion actualizada exitosamente", direccionMessageActual);
     }
 
     @Test
@@ -158,13 +184,18 @@ class DireccionControlTest {
         when(direccionService.obtenerDireccionPorId(idDireccion)).thenReturn(Optional.empty());
 
         // Ejecutamos el metodo del controlador
-        ResponseEntity<Direccion> direccionResponseEntity = direccionControl.actualizarDireccion(idDireccion, direccionActualizada);
+        ResponseWrapper<Direccion> direccionWrapperActual = direccionControl.actualizarDireccion((long) idDireccion, direccionActualizada);
+        ResponseEntity<Direccion> direccionResponseEntity = direccionWrapperActual.getResponseEntity();
         Direccion direccionActual = direccionResponseEntity.getBody();
+        boolean direccionIsSuccesActual = direccionWrapperActual.isSuccess();
+        String direccionMessageActual = direccionWrapperActual.getMessage();
 
         // Validamos el resultado
         assertEquals(404, direccionResponseEntity.getStatusCode().value());
         assertNull(direccionActual);
         verify(direccionService, never()).actualizarDireccion(direccionActualizada);
+        assertFalse(direccionIsSuccesActual);
+        assertEquals("La direccion indicada no existe", direccionMessageActual);
     }
 
     @Test
@@ -175,10 +206,15 @@ class DireccionControlTest {
         doNothing().when(direccionService).eliminarDireccion(idDireccion);
 
         // Ejecutamos el metodo del controlador
-        ResponseEntity<Void> responseEntity = direccionControl.eliminarDireccion(idDireccion);
+        ResponseWrapper<Void> direccionWrapperActual = direccionControl.eliminarDireccion(idDireccion);
+        ResponseEntity<Void> direccionResponseEntity = direccionWrapperActual.getResponseEntity();
+        boolean direccionIsSuccesActual = direccionWrapperActual.isSuccess();
+        String direccionMessageActual = direccionWrapperActual.getMessage();
 
         // Validamos el resultado
-        assertEquals(204, responseEntity.getStatusCode().value());
+        assertEquals(204, direccionResponseEntity.getStatusCode().value());
+        assertTrue(direccionIsSuccesActual);
+        assertEquals("Direccion eliminada correctamente", direccionMessageActual);
         verify(direccionService, atLeastOnce()).eliminarDireccion(idDireccion);
     }
 

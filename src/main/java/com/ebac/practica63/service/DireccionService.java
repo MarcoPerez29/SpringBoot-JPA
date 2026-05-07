@@ -1,6 +1,7 @@
-package com.example.practica63.service;
+package com.ebac.practica63.service;
 
-import com.example.practica63.dto.Direccion;
+import com.ebac.practica63.dto.Direccion;
+import com.ebac.practica63.repository.DireccionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

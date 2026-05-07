@@ -1,7 +1,7 @@
-package com.example.practica63.crontroller;
+package com.ebac.practica63.crontroller;
 
-import com.example.practica63.dto.Usuario;
-import com.example.practica63.service.UsuarioService;
+import com.ebac.practica63.dto.Usuario;
+import com.ebac.practica63.service.UsuarioService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -36,11 +36,16 @@ class UsuarioControlTest {
         when(usuarioService.obtenerUsuarios()).thenReturn(usuariosListExpected);
 
         // Ejecutamos el metodo del controlador
-        List<Usuario> usuariosListActual = usuarioControl.obtenerUsuarios();
+        ResponseWrapper<List<Usuario>> usuariosWrappertActual = usuarioControl.obtenerUsuarios();
+        List<Usuario> usuariosListActual = usuariosWrappertActual.getResponseEntity().getBody();
+        boolean usuariosIsSuccesActual = usuariosWrappertActual.isSuccess();
+        String usuariosMessageActual = usuariosWrappertActual.getMessage();
 
-        //Validamos el resultado
+        // Validamos el resultado
         assertEquals(usuarios, usuariosListActual.size());
         assertEquals(usuariosListExpected, usuariosListActual);
+        assertTrue(usuariosIsSuccesActual);
+        assertEquals("Listado de usuarios", usuariosMessageActual);
     }
 
     @Test
@@ -49,11 +54,11 @@ class UsuarioControlTest {
         when(usuarioService.obtenerUsuarios()).thenReturn(List.of());
 
         // Ejecutamos el metodo del controlador
-        List<Usuario> usuarioListActual = usuarioControl.obtenerUsuarios();
+        ResponseWrapper<List<Usuario>> usuariosWrappertActual = usuarioControl.obtenerUsuarios();
+        List<Usuario> usuariosListActual = usuariosWrappertActual.getResponseEntity().getBody();
 
         //Validamos el resultado
-        assertTrue(usuarioListActual.isEmpty());
-
+        assertTrue(usuariosListActual.isEmpty());
         verify(usuarioService, times(1)).obtenerUsuarios();
     }
 
@@ -66,13 +71,18 @@ class UsuarioControlTest {
         when(usuarioService.obtenerUsuarioPorId(idUsuario)).thenReturn(usuarioExpected);
 
         // Ejecutamos el metodo del controlador
-        ResponseEntity<Usuario> usuarioResponseEntity = usuarioControl.obtenerUsuarioPorId(idUsuario);
+        ResponseWrapper<Usuario> usuarioWrappertActual = usuarioControl.obtenerUsuarioPorId(idUsuario);
+        ResponseEntity<Usuario> usuarioResponseEntity = usuarioWrappertActual.getResponseEntity();
         Usuario usuarioActual = usuarioResponseEntity.getBody();
+        boolean usuarioIsSuccesActual = usuarioWrappertActual.isSuccess();
+        String usuarioMessageActual = usuarioWrappertActual.getMessage();
 
         // Validamos el resultado
         assertEquals(200, usuarioResponseEntity.getStatusCode().value());
         assertNotNull(usuarioActual);
         assertEquals("Nombre1", usuarioActual.getNombre());
+        assertTrue(usuarioIsSuccesActual);
+        assertEquals("Informacion del usuario 1", usuarioMessageActual);
     }
 
     @Test
@@ -83,12 +93,17 @@ class UsuarioControlTest {
         when(usuarioService.obtenerUsuarioPorId(idUsuario)).thenReturn(Optional.empty());
 
         // Ejecutamos el metodo del controlador
-        ResponseEntity<Usuario> usuarioResponseEntity = usuarioControl.obtenerUsuarioPorId(idUsuario);
+        ResponseWrapper<Usuario> usuarioWrappertActual = usuarioControl.obtenerUsuarioPorId(idUsuario);
+        ResponseEntity<Usuario> usuarioResponseEntity = usuarioWrappertActual.getResponseEntity();
         Usuario usuarioActual = usuarioResponseEntity.getBody();
+        boolean usuarioIsSuccesActual = usuarioWrappertActual.isSuccess();
+        String usuarioMessageActual = usuarioWrappertActual.getMessage();
 
         // Validar el resultado
         assertEquals(404, usuarioResponseEntity.getStatusCode().value());
         assertTrue(Objects.isNull(usuarioActual));
+        assertFalse(usuarioIsSuccesActual);
+        assertEquals("El id:  1, no existe", usuarioMessageActual);
     }
 
     @Test
@@ -99,12 +114,17 @@ class UsuarioControlTest {
         when(usuarioService.crearUsuario(usuarioExpected)).thenReturn(usuarioExpected);
 
         // Ejecutamos el metodo del controlador
-        ResponseEntity<Usuario> usuarioResponseEntity = usuarioControl.crearUsuario(usuarioExpected);
+        ResponseWrapper<Usuario> usuarioWrappertActual = usuarioControl.crearUsuario(usuarioExpected);
+        ResponseEntity<Usuario> usuarioResponseEntity = usuarioWrappertActual.getResponseEntity();
         Usuario usuarioActual = usuarioResponseEntity.getBody();
+        boolean usuarioIsSuccesActual = usuarioWrappertActual.isSuccess();
+        String usuarioMessageActual = usuarioWrappertActual.getMessage();
 
         // Validamos el resultado
         assertEquals(201, usuarioResponseEntity.getStatusCode().value());
         assertTrue(Objects.isNull(usuarioActual));
+        assertTrue(usuarioIsSuccesActual);
+        assertEquals("Usuario creado exitosamente", usuarioMessageActual);
     }
 
     @Test
@@ -127,8 +147,11 @@ class UsuarioControlTest {
         doNothing().when(usuarioService).actualizarUsuario(usuarioActualizado);
 
         // Ejecutamos el metodo del controlador
-        ResponseEntity<Usuario> usuarioResponseEntity = usuarioControl.actualizarUsuario((long) idUsuario,usuarioActualizado);
+        ResponseWrapper<Usuario> usuarioWrappertActual = usuarioControl.actualizarUsuario((long) idUsuario, usuarioActualizado);
+        ResponseEntity<Usuario> usuarioResponseEntity = usuarioWrappertActual.getResponseEntity();
         Usuario usuarioActual = usuarioResponseEntity.getBody();
+        boolean usuarioIsSuccesActual = usuarioWrappertActual.isSuccess();
+        String usuarioMessageActual = usuarioWrappertActual.getMessage();
 
         // Validamos el resultado
         assertEquals(200, usuarioResponseEntity.getStatusCode().value());
@@ -136,6 +159,8 @@ class UsuarioControlTest {
         assertEquals(idUsuario, usuarioActual.getIdUsuario());
         assertEquals(nombreActualizado, usuarioActual.getNombre());
         assertEquals(edadActualizada, usuarioActual.getEdad());
+        assertTrue(usuarioIsSuccesActual);
+        assertEquals("Usuario actualizado correctamente", usuarioMessageActual);
     }
 
     @Test
@@ -152,13 +177,18 @@ class UsuarioControlTest {
         when(usuarioService.obtenerUsuarioPorId(idUsuario)).thenReturn(Optional.empty());
 
         // Ejecutamos el metodo del controlador
-        ResponseEntity<Usuario> usuarioResponseEntity = usuarioControl.actualizarUsuario(idUsuario,usuarioActualizado);
+        ResponseWrapper<Usuario> usuarioWrappertActual = usuarioControl.actualizarUsuario((long) idUsuario, usuarioActualizado);
+        ResponseEntity<Usuario> usuarioResponseEntity = usuarioWrappertActual.getResponseEntity();
         Usuario usuarioActual = usuarioResponseEntity.getBody();
+        boolean usuarioIsSuccesActual = usuarioWrappertActual.isSuccess();
+        String usuarioMessageActual = usuarioWrappertActual.getMessage();
 
         // Validamos el resultado
         assertEquals(404, usuarioResponseEntity.getStatusCode().value());
         assertNull(usuarioActual);
         verify(usuarioService, never()).actualizarUsuario(usuarioActualizado);
+        assertFalse(usuarioIsSuccesActual);
+        assertEquals("El usuario indicado no existe", usuarioMessageActual);
     }
 
     @Test
@@ -169,10 +199,15 @@ class UsuarioControlTest {
         doNothing().when(usuarioService).eliminarUsuario(idUsuario);
 
         // Ejecutamos el metodo del controlador
-        ResponseEntity<Void> responseEntity = usuarioControl.eliminarUsuario(idUsuario);
+        ResponseWrapper<Void> usuarioWrappertActual = usuarioControl.eliminarUsuario(idUsuario);
+        ResponseEntity<Void> usuarioResponseEntity = usuarioWrappertActual.getResponseEntity();
+        boolean usuarioIsSuccesActual = usuarioWrappertActual.isSuccess();
+        String usuarioMessageActual = usuarioWrappertActual.getMessage();
 
         // Validamos el resultado
-        assertEquals(204, responseEntity.getStatusCode().value());
+        assertEquals(204, usuarioResponseEntity.getStatusCode().value());
+        assertTrue(usuarioIsSuccesActual);
+        assertEquals("Usuario eliminado correctamente", usuarioMessageActual);
         verify(usuarioService, atLeastOnce()).eliminarUsuario(idUsuario);
     }
 
@@ -187,11 +222,17 @@ class UsuarioControlTest {
         doThrow(Exception.class).when(usuarioService).crearUsuario(usuario);
 
         // Ejecutamos el metodo del controlador
-        ResponseEntity<Usuario> responseEntity = usuarioControl.crearUsuario(usuario);
-        Usuario usuarioActual = responseEntity.getBody();
+        ResponseWrapper<Usuario> usuarioWrappertActual = usuarioControl.crearUsuario(usuario);
+        ResponseEntity<Usuario> usuarioResponseEntity = usuarioWrappertActual.getResponseEntity();
+        Usuario usuarioActual = usuarioResponseEntity.getBody();
+        boolean usuarioIsSuccesActual = usuarioWrappertActual.isSuccess();
+        String usuarioMessageActual = usuarioWrappertActual.getMessage();
 
-        assertEquals(400, responseEntity.getStatusCode().value());
+        assertEquals(400, usuarioResponseEntity.getStatusCode().value());
         assertNull(usuarioActual);
+        assertFalse(usuarioIsSuccesActual);
+        assertNull(usuarioMessageActual);
+
     }
 
     private List<Usuario> crearUsuarios(int elementos) {
