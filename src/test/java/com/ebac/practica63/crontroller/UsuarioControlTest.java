@@ -122,7 +122,6 @@ class UsuarioControlTest {
 
         // Validamos el resultado
         assertEquals(201, usuarioResponseEntity.getStatusCode().value());
-        assertTrue(Objects.isNull(usuarioActual));
         assertTrue(usuarioIsSuccesActual);
         assertEquals("Usuario creado exitosamente", usuarioMessageActual);
     }

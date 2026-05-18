@@ -56,7 +56,7 @@ public class UsuarioControl {
         log.info("Creando usuario...");
         try {
             usuarioService.crearUsuario(usuario);
-            ResponseEntity<Usuario> responseEntity = ResponseEntity.created(new URI("http://local/host/usuarios")).build();
+            ResponseEntity<Usuario> responseEntity = ResponseEntity.created(new URI("http://local/host/usuarios")).body(usuario);
             log.info("El usuario se ha creado exitosamente");
             return new ResponseWrapper<>(true, "Usuario creado exitosamente", responseEntity);
         } catch (Exception e) {

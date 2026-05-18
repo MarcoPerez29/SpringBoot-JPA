@@ -1,6 +1,7 @@
 package com.ebac.practica63.crontroller;
 
 import com.ebac.practica63.dto.Telefono;
+import com.ebac.practica63.dto.Usuario;
 import com.ebac.practica63.service.TelefonoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,6 @@ public class TelefonoControl {
         // Lógiva para obtener el telefono por su ID
         // Devuelve n objeto Telefono que se convertirá automáticamente en JSON/XML
         Optional<Telefono> telefonoOptional = telefonoService.obtenerTelefonoPorId(id);
-
         log.info("Obteniendo telefono por id...");
         ResponseEntity<Telefono> responseEntity =
                 telefonoOptional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
@@ -71,15 +71,25 @@ public class TelefonoControl {
         Optional<Telefono> telefonoOptional = telefonoService.obtenerTelefonoPorId(id);
         log.info("Actualizando telefono con id {}...", id);
 
-        if (telefonoOptional.isPresent()) {
-            telefonoActualizado.setIdTelefono(telefonoOptional.get().getIdTelefono());
-            telefonoService.actualizarTelefono(telefonoActualizado);
 
-            ResponseEntity<Telefono> responseEntity = ResponseEntity.ok(telefonoActualizado);
+        ResponseEntity<Telefono> responseEntity =
+                telefonoOptional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        if (telefonoOptional.isPresent()) {
+            Usuario usuario = new Usuario();
+            int idUsuario = telefonoOptional.get().getUsuario().getIdUsuario();
+            String nombre = telefonoOptional.get().getUsuario().getNombre();
+            int edad = telefonoOptional.get().getUsuario().getEdad();
+
+            usuario.setEdad(edad);
+            usuario.setNombre(nombre);
+            usuario.setIdUsuario(idUsuario);
+
+            telefonoActualizado.setIdTelefono(telefonoOptional.get().getIdTelefono());
+            telefonoActualizado.setUsuario(usuario);
+            telefonoService.actualizarTelefono(telefonoActualizado);
             log.info("El telefono con id {} se ha actualizado correctamente", id);
             return new ResponseWrapper<>(true, "Telefono actualizado correctamente", responseEntity);
         } else {
-            ResponseEntity<Telefono> responseEntity = ResponseEntity.notFound().build();
             log.info("El telefono con id {} no existente", id);
             return new ResponseWrapper<>(false, "El telefono indicado no existe", responseEntity);
         }
